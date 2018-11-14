@@ -1,5 +1,3 @@
-var domInstanceMap = {};
-
 $(function () {
     initModule();
     bindModule();
@@ -24,10 +22,9 @@ function bindModule(){
         }
     });
 
-
     // 单点击了连接线上的X号
     jsPlumb.bind('dblclick', function (conn, originalEvent) {
-        PlumbTool.deleteLine(conn)
+        JSPlumbTool.deleteLine(conn)
     })
 
     // 当链接建立
@@ -50,31 +47,20 @@ function bindDropItem() {
     $('#app').on('click', '.addItem', function (e) {
         var ul = $(this).parents('.menu').find('ul');
         var li = ul.find("li").last().clone();
-        li.attr('id', uuid.v1());
 
-        domInstanceMap[e.target.dataset.pid].addMenuItem(ul.get(0), li.get(0));
-
+        Menu.addMenuItem(ul.get(0), li.get(0));
     });
 }
 
 // 渲染端点
 function renderInstanceEndpoint(dataset, position) {
     var domId = uuid.v1();
-    var instanceStr = dataset.module;
-    var instance = eval("new" + instanceStr + "()");
+    var module = dataset.module;
+    var template = eval(module + ".render()");
     var moduleData = new ModuleData(domId, position.left, position.top);
 
-    // test
-    var ar = [];
-    ar.push(new MenuItem("id1", domId));
-    ar.push(new MenuItem("id2", domId));
-    ar.push(new MenuItem("id3", domId));
-    moduleData.setItems(ar);
-
-    domInstanceMap[domId] = instance;
-    $('#drop-bg').append(instance.renderHtml(moduleData));
-
-    instance.renderEndpoint(moduleData);
+    $('#drop-bg').append(ModuleTool.renderHtml(template, moduleData));
+    eval(module + ".renderEndpoint(moduleData)");
 }
 
 function eventHandler (data) {
@@ -83,10 +69,6 @@ function eventHandler (data) {
     }
 }
 
-// 获取基本配置
-function getBaseNodeConfig () {
-    return Object.assign({}, visoConfig.baseStyle);
-}
 
 // 删除一个节点以及
 function emptyNode (id) {

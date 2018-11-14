@@ -1,9 +1,34 @@
-var PlumbTool = {
+var JSPlumbTool = {
+    // 让元素可拖动
+    makeDraggable: function(id) {
+        jsPlumb.draggable(id, {
+            containment: 'parent'
+        },);
+    },
+
+
+    // 增加端点
+    addEndpoint: function (id, data) {
+        var config = getBaseNodeConfig();
+
+        var config2 = Object.assign(config, data);
+        config.isSource = config2.isSource;
+        config.isTarget = config2.isTarget;
+        config.maxConnections = config2.maxConnections;
+
+        jsPlumb.addEndpoint(id, {
+            anchors: data.dir,
+            uuid: id + '-' + data.inOut,
+        }, config2);
+    },
+
     deleteLine: function (conn) {
         if (confirm('确定删除所点击的链接吗？')) {
             jsPlumb.detach(conn)
         }
     },
+
+    // 画图
     draw: function (nodes) {
         // 将Exit节点排到最后
         nodes.sort(function (a, b) {
@@ -45,6 +70,7 @@ var PlumbTool = {
     connectEndpoint: function (from, to) {
         jsPlumb.connect({ uuids: [from, to] })
     },
+
     mainConnect: function (nodes) {
         var me = this
         nodes.forEach(function (item) {
@@ -53,6 +79,7 @@ var PlumbTool = {
             }
         })
     },
+
     getTemplate: function (node) {
         return $('#tpl-' + node.type).html() || $('#tpl-demo').html()
     },
@@ -79,10 +106,12 @@ var PlumbTool = {
             }
         }
     },
+
     addEndpointOfRoot: function (node) {
         addDraggable(node.id)
         initBeginNode(node.id)
     },
+
     connectEndpointOfRoot: function (node) {
         this.connectEndpoint(node.id + '-out', node.data.nextNode + '-in')
     },
@@ -90,14 +119,17 @@ var PlumbTool = {
         addDraggable(node.id)
         initEndNode(node.id)
     },
+
     addEndpointOfAnnounce: function (node) {
         addDraggable(node.id)
         setEnterPoint(node.id)
         setExitPoint(node.id)
     },
+
     connectEndpointOfAnnounce: function (node) {
         this.connectEndpoint(node.id + '-out', node.data.nextNode + '-in')
     },
+
     addEndpointOfWorkTime: function (node) {
         addDraggable(node.id)
         setEnterPoint(node.id)
@@ -108,10 +140,12 @@ var PlumbTool = {
             setExitPoint(node.id + '-' + key, 'Right')
         })
     },
+
     connectEndpointOfWorkTime: function (node) {
         this.connectEndpoint(node.id + '-onWorkTime-out', node.data.onWorkNode + '-in')
         this.connectEndpoint(node.id + '-offWorkTime-out', node.data.offWorkNode + '-in')
     },
+
     addEndpointOfMenu: function (node) {
         addDraggable(node.id)
         setEnterPoint(node.id)
@@ -126,6 +160,7 @@ var PlumbTool = {
             setExitPoint(node.id + '-' + key, 'Right')
         })
     },
+
     connectEndpointOfMenu: function (node) {
         this.connectEndpoint(node.id + '-noinput-out', node.data.noinput.nextNode + '-in')
         this.connectEndpoint(node.id + '-nomatch-out', node.data.nomatch.nextNode + '-in')
@@ -136,4 +171,9 @@ var PlumbTool = {
             me.connectEndpoint(node.id + '-key-' + item.key + '-out', item.nextNode + '-in')
         })
     }
+}
+
+// 获取基本配置
+function getBaseNodeConfig () {
+    return Object.assign({}, visoConfig.baseStyle);
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VIR演示</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./resources/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="./resources/css/index.css" rel="stylesheet" >
+
+    <script src="resources/js/lib/uuid.min.js"></script>
+    <script src="resources/js/lib/mustache.min.js"></script>
+    <script src="resources/js/lib/jquery.min.js"></script>
+    <script src="resources/js/lib/jquery-ui.min.js"></script>
+    <script src="resources/js/lib/jquery.jsPlumb.min.js"></script>
+    <script src="resources/js/lib/graphlib.min.js"></script>
+
+    <script src="resources/js/tool.js"></script>
+    <script src="resources/js/template/config.js"></script>
+    <script src="resources/js/template/template.js"></script>
+    <script src="resources/js/module/start.js"></script>
+    <script src="resources/js/module/menu.js"></script>
+    <script src="resources/js/module/end.js"></script>
+    <script src="resources/js/index.js"></script>
+
+</head>
+<body>
+
+    <div id="app">
+        <div class="container-fluid">
+            <div class="row">
+                <!--目录-->
+                <div id="side-buttons" class="col-md-1 bg-info min-height">
+                    <div>
+                        <h5>节点类型列表</h5>
+
+                        <a class="btn btn-success btn-controler" href="#" data-module="Start" instance="" role="button">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                            开始
+                        </a>
+                        <a class="btn btn-success btn-controler" href="#" data-module="Menu" instance="" role="button">
+                            <i class="fa fa-list-alt" aria-hidden="true"></i>
+                             菜单
+                        </a>
+                        <a class="btn btn-success btn-controler" href="#" data-module="End" instance="" role="button">
+                            <i class="fa fa-stop" aria-hidden="true"></i>
+                            结束
+                        </a>
+
+                    </div>
+                </div>
+
+                <!--拖拽区-->
+                <div class="col-md-11 bg-success min-height" id="drop-bg">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
